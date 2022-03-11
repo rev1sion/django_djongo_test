@@ -19,12 +19,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6uap-$10kcivyz0p*-jd#z$#)svf*$74x2l4es6!40l_r^h@!n'
+SECRET_KEY = os.environ.get('SECRET_KEY', '6uap-$10kcivyz0p*-jd#z$#)svf*$74x2l4es6!40l_r^h@!n'),
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 # Application definition
 
@@ -74,13 +74,14 @@ WSGI_APPLICATION = 'mongo_test.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': os.environ.get('MYSQL_DATABASE', 'dev_api_db'),
-        'ENFORCE_SCHEMA': False,
+        'NAME': os.environ.get('MONGO_DATABASE', 'dev_api_db'),
+        'ENFORCE_SCHEMA': os.environ.get('ENFORCE_SCHEMA', False),
         'CLIENT': {
-            'host': 'mongo',
-            'port': 27017,
-            'username': 'root',
-            'password': 'example',
+            'host': os.environ.get('MONGO_HOST'),
+            'port': int(os.environ.get('MONGO_PORT')),
+            'username': os.environ.get('MONGO_USERNAME'),
+            'password': os.environ.get('MONGO_PASSWORD'),
+
             # 'authSource': 'db-name',
             # 'authMechanism': 'SCRAM-SHA-1'
         },

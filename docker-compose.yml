@@ -8,14 +8,14 @@ services:
       context: .
       dockerfile: docker/dev/django_app/Dockerfile
     entrypoint: /entrypoint.sh
-    tty: True
+#    tty: True
     ports:
-      - "8000:8000"
+      - "80:8000"
     restart: "no"
-    #    env_file:
-    #      - docker/dev/env/.local.env
-    #      - docker/dev/env/.web.env
-    #      - docker/dev/env/.mariadb.env
+    env_file:
+      #      - docker/dev/env/.local.env
+      - docker/dev/env/.web.env
+      - docker/dev/env/.db.env
     volumes:
       - ./django_proj:/app
     networks:
@@ -31,9 +31,8 @@ services:
   mongo:
     image: mongo
     restart: "no"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+    env_file:
+      - docker/dev/env/.db.env
     expose:
       - 27017
     networks:
@@ -44,10 +43,8 @@ services:
     restart: "no"
     ports:
       - "8081:8081"
-    environment:
-      ME_CONFIG_MONGODB_URL: "mongodb://root:example@mongo:27017/"
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+    env_file:
+      - docker/dev/env/.db.env
     networks:
       - mongo_test
     depends_on:
