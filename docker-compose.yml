@@ -6,7 +6,7 @@ services:
   django_app:
     build:
       context: .
-      dockerfile: docker/django_app/dev/Dockerfile
+      dockerfile: docker/dev/django_app/Dockerfile
     entrypoint: /entrypoint.sh
     tty: True
     ports:

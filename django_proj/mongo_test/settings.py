@@ -70,6 +70,7 @@ WSGI_APPLICATION = 'mongo_test.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# todo err: NotImplementedError: Database objects do not implement truth value testing or bool().
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
