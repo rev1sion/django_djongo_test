@@ -1,0 +1,58 @@
+# Todo add env
+
+version: '3'
+
+services:
+  django_app:
+    build:
+      context: .
+      dockerfile: docker/django_app/dev/Dockerfile
+    entrypoint: /entrypoint.sh
+    tty: True
+    ports:
+      - "8000:8000"
+    restart: "no"
+    #    env_file:
+    #      - docker/dev/env/.local.env
+    #      - docker/dev/env/.web.env
+    #      - docker/dev/env/.mariadb.env
+    volumes:
+      - ./django_proj:/app
+    networks:
+      - mongo_test
+    depends_on:
+      - mongo
+
+    logging:
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  mongo:
+    image: mongo
+    restart: "no"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    expose:
+      - 27017
+    networks:
+      - mongo_test
+
+  mongo-express:
+    image: mongo-express:0.49
+    restart: "no"
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: "mongodb://root:example@mongo:27017/"
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+    networks:
+      - mongo_test
+    depends_on:
+      - mongo
+
+networks:
+  mongo_test:
+    driver: bridge
