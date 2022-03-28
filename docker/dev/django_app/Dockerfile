@@ -22,7 +22,7 @@ COPY --chown=$USER:$USER ./django_proj $APP_DIR
 
 RUN pip install --upgrade pip && pip install -r $APP_DIR/requirements.txt
 
-COPY ./docker/django_app/entrypoint.sh /entrypoint.sh
+COPY ./docker/dev/django_app/entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
 
